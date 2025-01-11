@@ -12,14 +12,20 @@ const userSchema=new mongoose.Schema({
         required:true,
         unique:true,
     },
-    phone:{
-        type:String,
-        required:true,
-        unique:true,
-    },
+    
     password:{
         type:String,
         required:true,
+    },
+    blogs:{
+        type:[mongoose.SchemaTypes.ObjectId],
+        ref:'blogs',
+        default:[]
+    },
+    likedBlogs:{
+        type:[mongoose.SchemaTypes.ObjectId],
+        ref:'likedBlogs',
+        default:[]
     },
     createdAt:{
         type:Date,
