@@ -2,7 +2,17 @@ const AppConfig=require('./configs/app_configs')
 const express=require('express')
 const dbConfig=require('./configs/db_configs')
 const mongoose=require('mongoose')
+const bodyParser=require('body-parser')
+const cors=require('cors')
 const app=express()
+
+//middleware for converting js objects into json
+app.use(bodyParser.json())
+app.use(cors())
+
+
+//plugging routes to app
+require('./routes/user.routes')(app)
 
 //connection to DB:
  mongoose.connect(dbConfig. DB_URL)
