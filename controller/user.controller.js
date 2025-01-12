@@ -1,6 +1,8 @@
 // user Controller
 const UserModel=require('../model/user.model')
 const bcrypt=require("bcryptjs")
+
+
 exports.signUp=async(req,res)=>{
     try{
        const userObj={

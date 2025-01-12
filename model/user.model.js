@@ -17,6 +17,12 @@ const userSchema=new mongoose.Schema({
         required:true,
         minlength: 8,
     },
+    email: {
+        type: String,
+        required: true,
+        unique: true 
+        },
+   
     blogs:{
         type:[mongoose.SchemaTypes.ObjectId],
         ref:'blogs',
