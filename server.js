@@ -4,6 +4,7 @@ const dbConfig=require('./configs/db_configs')
 const mongoose=require('mongoose')
 const bodyParser=require('body-parser')
 const cors=require('cors')
+require("dotenv").config()
 const app=express()
 
 //middleware for converting js objects into json
