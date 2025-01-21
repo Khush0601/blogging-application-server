@@ -1,3 +1,4 @@
+const mongoose=require('mongoose')
 const BlogModel=require('../model/blog.model')
 exports.createBlog=async(req,res)=>{
   try{
@@ -24,11 +25,40 @@ exports.createBlog=async(req,res)=>{
 
 }
 
-// exports.getAllBlogs=async(req,res)=>{
-//    try{
+exports.getAllBlogs=async(req,res)=>{
+   try{
+     const blogs=await BlogModel.find({})
+     res.status(200).send(blogs)
+   }
+   catch(err){
+     res.status(500).send({
+        message:'error while fetching'
+     })
+   }
+}
+
+exports.getBlogsById=async(req,res)=>{
+    const blogId=req.params.blogId;
+    if(!mongoose.Types.ObjectId.isValid(blogId)){
+       return res.status(400).send({
+           message:'invalid blogId'
+       })
+    }
+   try{
+    const blogDetails=await BlogModel.findById(blogId)
+    if(!blogDetails){
+        return res.status(404).send({
+            message:'blog not found'
+        })
+    }
+    else{
+        return res.status(200).send(blogDetails)
+    }
      
-//    }
-//    catch(err){
-     
-//    }
-// }
+    }
+    catch(err){
+       res.status(500).send({
+        message:err.message??'error while fetching'
+       })
+    }
+}
