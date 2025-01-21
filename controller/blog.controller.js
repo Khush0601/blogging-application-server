@@ -1,4 +1,5 @@
 const mongoose=require('mongoose')
+const UserModel=require('../model/user.model')
 const BlogModel=require('../model/blog.model')
 exports.createBlog=async(req,res)=>{
   try{
@@ -10,6 +11,11 @@ exports.createBlog=async(req,res)=>{
       }
     
       const saveBlog=await BlogModel.create(blogObj)
+      // after creating blog the user who created blog add the blog id their schema:
+      const user=await UserModel.findById(blogObj.userId)
+      user.blogs.push(saveBlog._id)
+      await user.save()
+      
       res.status(201).send({
         message:'blog created successfully',
         blog:saveBlog
@@ -60,5 +66,14 @@ exports.getBlogsById=async(req,res)=>{
        res.status(500).send({
         message:err.message??'error while fetching'
        })
+    }
+}
+
+exports.updateBlog=async(req,res)=>{
+    try{
+     
+    }
+    catch(err){
+
     }
 }
