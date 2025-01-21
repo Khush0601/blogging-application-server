@@ -88,6 +88,7 @@ exports.signUp=async(req,res)=>{
        if(savingUser){
         return res.status(201).send(message)
      }
+
      else{
      return  res.status(404).send({
         message:"register unsuccessfull"
@@ -100,4 +101,34 @@ exports.signUp=async(req,res)=>{
             message:err?.message
         })
      }
+    }
+
+    exports.signIn=async(req,res)=>{
+      try{
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+       const userEmail= req.body.email;
+       console.log(userEmail)
+       const passwordFromReq=req.body.password;
+       console.log(passwordFromReq)
+       const validUserData=await UserModel.findOne({email:userEmail})
+       if(!validUserData){
+        return res.status(404).send({
+          message:'user not found'
+        })
+       }
+      const isValidPassword=bcrypt.compareSync(passwordFromReq,validUserData.password)
+      if(!isValidPassword){
+        return res.status(401).send({
+          message:'invalid credentials'
+        })
+      }
+      const {password,...restData}=validUserData._doc
+      return res.status(200).send(restData)
+      }
+      catch(e){
+        console.log(e)
+        return res.status(500).send({
+          message:'internal server error'
+        })
+      }
     }
