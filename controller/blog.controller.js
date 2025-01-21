@@ -71,9 +71,48 @@ exports.getBlogsById=async(req,res)=>{
 
 exports.updateBlog=async(req,res)=>{
     try{
-     
+     const blogId=req.body.blogId;
+     const updateDetails={
+        blogBanner:req.body.blogBanner,
+        title:req.body.title,
+        content:req.body.content,
+     }
+     const updateBlogDetails=await BlogModel.findByIdAndUpdate(blogId,{$set:{...updateDetails}},{new:true})
+     res.status(200).send({
+        message:'blog updated',
+        blog:updateBlogDetails
+      })
     }
     catch(err){
+   console.log(e)
+   res.status(500).send({
+    message:'error while updating blog',
+    err
+   })
+    }
+}
 
+exports.deleteBlog=async(req,res)=>{
+    try{
+    const blogId=req.body.blogId;
+    if(!blogId){
+      return res.status(404).send({
+      message:'blogId is not valid'
+    })
+    }
+    const deleteBlog=await BlogModel.findByIdAndDelete(blogId)
+    if(!deleteBlog){
+        return res.status(404).send({
+            message:'blog is not found'
+        })
+    }
+    res.status(200).send({
+        message:'blog deleted successfully'
+    })
+    }
+    catch(err){
+     res.status(500).send({
+        message:'error while deleting a blog'
+     })
     }
 }
