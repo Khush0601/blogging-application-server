@@ -12,6 +12,7 @@ exports.createBlog=async(req,res)=>{
       res.status(201).send({
         message:'blog created successfully',
         blog:saveBlog
+        
       })
   }
   catch(err){
