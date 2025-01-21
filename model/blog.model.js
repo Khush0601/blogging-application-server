@@ -28,7 +28,7 @@ const blogSchema=new mongoose.Schema({
    ref:"comments",
    default:[]
   }
-
+  
 
 },{ timestamps: true })
 module.exports=mongoose.model('Blog', blogSchema);

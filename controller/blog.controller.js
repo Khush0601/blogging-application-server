@@ -12,7 +12,7 @@ exports.createBlog=async(req,res)=>{
       res.status(201).send({
         message:'blog created successfully',
         blog:saveBlog
-        
+
       })
   }
   catch(err){
@@ -23,3 +23,12 @@ exports.createBlog=async(req,res)=>{
   }
 
 }
+
+// exports.getAllBlogs=async(req,res)=>{
+//    try{
+     
+//    }
+//    catch(err){
+     
+//    }
+// }
