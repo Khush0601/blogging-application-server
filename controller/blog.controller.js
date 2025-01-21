@@ -97,7 +97,7 @@ exports.deleteBlog=async(req,res)=>{
     const blogId=req.body.blogId;
     if(!blogId){
       return res.status(404).send({
-      message:'blogId is not valid'
+      message:'blogId is invalid'
     })
     }
     const deleteBlog=await BlogModel.findByIdAndDelete(blogId)
