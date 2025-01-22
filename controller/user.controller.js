@@ -107,9 +107,8 @@ exports.signUp=async(req,res)=>{
       try{
         let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
        const userEmail= req.body.email;
-       console.log(userEmail)
        const passwordFromReq=req.body.password;
-       console.log(passwordFromReq)
+       
        const validUserData=await UserModel.findOne({email:userEmail})
        if(!validUserData){
         return res.status(404).send({
