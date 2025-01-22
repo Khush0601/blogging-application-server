@@ -46,3 +46,4 @@ exports.getAllCommentOfBlogId=async(req,res)=>{
     })
     }
 }
+
