@@ -33,3 +33,16 @@ exports.addComment=async(req,res)=>{
       })
     }
 }
+
+exports.getAllCommentOfBlogId=async(req,res)=>{
+    const blogId=req.params.blogId;
+    try{
+     const commentId=await commentModel.find({blogId:blogId})
+     res.status(200).send(commentId)
+    }
+    catch(err){
+    res.status(500).send({
+        message:'error while getting comment'
+    })
+    }
+}
