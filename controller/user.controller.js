@@ -103,7 +103,7 @@ exports.signUp=async(req,res)=>{
      }
     }
 
-    exports.signIn=async(req,res)=>{
+exports.signIn=async(req,res)=>{
       try{
         let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
        const userEmail= req.body.email;
@@ -131,3 +131,49 @@ exports.signUp=async(req,res)=>{
         })
       }
     }
+
+exports.googleLogin=async(req,res)=>{
+     try{
+     
+     const {name,picture,email,uid,email_verified}=req.googleData
+     let query= {$or:[{googleId:{$regex:uid,$options:'i'}},{email:{$regex:email,$options:'i'}}]}
+     let userData=await UserModel.findOne(query)
+     if(userData){
+      const {password,...restData}=userData._doc
+      return res.status(200).send(restData)
+     }
+     else{
+      const userObj={
+        name:name,
+        email:email,
+        picture:picture,
+        password:bcrypt.hashSync(crypto.randomBytes(16)
+        .toString('base64')
+        .replace(/[^a-zA-Z0-9]/g, '')
+        .slice(0, 16),8),
+        googleId:uid,
+        isGoogleLogin:true,
+       }
+      const savingUser=await UserModel.create(userObj)
+      
+      if(savingUser){
+        const {password,...restData}=savingUser._doc
+        return res.status(200).send(restData)
+      }
+      else{
+        return res.status(500).send({
+          message:'something went wrong'
+        })
+      }
+     }
+     
+     
+     }
+     catch(err){
+      console.log(err)
+      res.status(500).send({
+        message:'error while signIn',
+        error:err
+      })
+     }
+}

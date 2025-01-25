@@ -7,6 +7,9 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
+    picture:{
+        type:String,
+    },
     email:{
         type:String,
         required:true,
@@ -17,7 +20,13 @@ const userSchema=new mongoose.Schema({
         required:true,
         minlength: 8,
     },
-   
+    googleId:{
+        type:String,
+    },
+    isGoogleLogin:{
+        type:Boolean,
+        default:false
+    },
     blogs:{
         type:[mongoose.SchemaTypes.ObjectId],
         ref:'blogs',
