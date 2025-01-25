@@ -14,6 +14,8 @@ app.use(cors())
 
 //plugging routes to app
 require('./routes/user.routes')(app)
+require('./routes/blog.routes')(app)
+require('./routes/comment.routes')(app)
 
 //connection to DB:
  mongoose.connect(dbConfig. DB_URL)
