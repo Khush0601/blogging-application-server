@@ -17,6 +17,7 @@ require('./routes/user.routes')(app)
 require('./routes/blog.routes')(app)
 require('./routes/comment.routes')(app)
 
+
 //connection to DB:
  mongoose.connect(dbConfig. DB_URL)
  const db=mongoose.connection
@@ -26,6 +27,7 @@ require('./routes/comment.routes')(app)
  db.once('open',()=>{
     console.log('connected to database')
  })
+
 
 //connection to server:
 app.listen(AppConfig.PORT,()=>{
