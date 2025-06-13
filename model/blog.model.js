@@ -14,6 +14,11 @@ const blogSchema=new mongoose.Schema({
     type: String,
     required: true
   },
+  category:{
+     type: String,
+     enum: ['AI', 'Startups', 'Security', 'Tech', 'Apps'],
+     required: true
+  },
   userId:{
     type:mongoose.SchemaTypes.ObjectId,
     ref:'user',
