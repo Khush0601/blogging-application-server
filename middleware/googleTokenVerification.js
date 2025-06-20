@@ -18,8 +18,9 @@ exports.googleTokenVerification=async(req,res,next)=>{
             message:'unauthorized token '
           })
       }
-     const googleToken=authValue.replace('Bearer ','')
+     const googleToken=authValue.replace('Bearer','')
      const decodedData=await admin.auth().verifyIdToken(googleToken)
+     console.log(decodedData)
      req.googleData=decodedData
      next()
    }
