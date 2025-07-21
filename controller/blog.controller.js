@@ -33,7 +33,15 @@ exports.createBlog=async(req,res)=>{
 
 exports.getAllBlogs=async(req,res)=>{
    try{
+    // let currentPage = req.query?.pageNumber;
+    // let fiterType = req.query?.type;
+    // let query={};
+    // if( !fiterType && fiterType !=='all' ){
+    //   query={category:fiterType}
+    // }
      const blogs=await BlogModel.find({})
+    //  find(query)
+    //  .limit(2).skip(currentPage*2)
      res.status(200).send(blogs)
    }
    catch(err){
