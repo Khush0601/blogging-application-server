@@ -36,7 +36,9 @@ exports.getAllBlogs=async(req,res)=>{
     let currentPage = Number(req.query?.pageNumber) ||1;
     let filterType = req.query?.type;
     let query={};
-    if( !filterType && filterType !=='all' ){
+    // console.log('Filter type:', filterType);
+    // console.log('Mongo query:', query);
+    if(filterType && filterType !=='all' ){
       query.category = filterType;
     }
      const blogs=await BlogModel.find(query).limit(10).skip((currentPage - 1) * 10)
