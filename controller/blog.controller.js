@@ -60,7 +60,7 @@ exports.getBlogsById=async(req,res)=>{
        })
     }
    try{
-    const blogDetails=await BlogModel.findById(blogId)
+    const blogDetails=await BlogModel.findById(blogId).populate('userId', 'name picture');
     if(!blogDetails){
         return res.status(404).send({
             message:'blog not found'
