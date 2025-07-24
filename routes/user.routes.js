@@ -6,5 +6,8 @@ module.exports=(app)=>{
     app.post('/bloggingApplication/api/v1/user/signUp',userController.signUp)
     app.post('/bloggingApplication/api/v1/user/signIn',userController.signIn)
     app.post('/bloggingApplication/api/v1/user/googleLogin',[googleTokenVerification],userController.googleLogin)
+     
+    
+
     
 }
