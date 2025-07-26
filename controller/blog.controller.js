@@ -7,12 +7,21 @@ exports.createBlog=async(req,res)=>{
         blogBanner:req.body.blogBanner,
         title:req.body.title,
         content:req.body.content,
+        category:req.body.category,
         userId:req.body.userId,
       }
+      console.log(blogObj.userId)
+       if (!blogObj.userId) {
+      return res.status(400).send({
+        message: 'User is required to create a blog',
+      });
+    }
     
       const saveBlog=await BlogModel.create(blogObj)
-      // after creating blog the user who created blog add the blog id their schema:
       const user=await UserModel.findById(blogObj.userId)
+       if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
       user.blogs.push(saveBlog._id)
       await user.save()
       
@@ -126,4 +135,19 @@ exports.deleteBlog=async(req,res)=>{
         message:'error while deleting a blog'
      })
     }
+}
+
+exports.getUserBlogs=async(req,res)=>{
+ try{
+  const userId=req.params.userId;
+  const blogs=await BlogModel.find({userId})
+    res.status(200).send({
+      message: "User blogs fetched successfully",
+      blogs,
+    });
+ }
+ catch(err){
+    console.error(err);
+    res.status(500).send({ message: "Error while fetching user blogs" });
+ }
 }
