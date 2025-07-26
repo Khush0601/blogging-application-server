@@ -5,6 +5,7 @@ const nodemailer=require("nodemailer")
 const crypto=require('crypto')
  const otpModel=require('../model/otp.model')
  const {otpTemplate}=require('../utils/otpTemplate')
+ const {generateToken}= require('../utils/jwt')
  
  const transporter = nodemailer.createTransport({
      host: 'smtp.gmail.com',
@@ -121,8 +122,12 @@ exports.signIn=async(req,res)=>{
           message:'invalid credentials'
         })
       }
+      const token=generateToken(validUserData._id)
       const {password,...restData}=validUserData._doc
-      return res.status(200).send(restData)
+      return res.status(200).send({
+        user:restData,
+        token
+      })
       }
       catch(e){
         console.log(e)
@@ -139,8 +144,12 @@ exports.googleLogin=async(req,res)=>{
      let query= {$or:[{googleId:{$regex:uid,$options:'i'}},{email:{$regex:email,$options:'i'}}]}
      let userData=await UserModel.findOne(query)
      if(userData){
+      const token=generateToken(userData._id)
       const {password,...restData}=userData._doc
-      return res.status(200).send(restData)
+      return res.status(200).send({
+        user:restData,
+        token
+      })
      }
      else{
       const userObj={
@@ -157,8 +166,12 @@ exports.googleLogin=async(req,res)=>{
       const savingUser=await UserModel.create(userObj)
       
       if(savingUser){
+        const token=generateToken(savingUser._id)
         const {password,...restData}=savingUser._doc
-        return res.status(200).send(restData)
+        return res.status(200).send({
+          user:restData,
+        token
+        })
       }
       else{
         return res.status(500).send({
@@ -173,7 +186,22 @@ exports.googleLogin=async(req,res)=>{
       console.log(err)
       res.status(500).send({
         message:'error while signIn',
-        error:err
+        error:err.message
       })
      }
 }
+
+exports.autoLogin = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.userId)
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+    const {password,...restData}=user._doc
+    res.status(200).send({ user:restData });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Error during auto login" });
+  }
+};
