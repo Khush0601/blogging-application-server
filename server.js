@@ -2,13 +2,13 @@ const AppConfig=require('./configs/app_configs')
 const express=require('express')
 const dbConfig=require('./configs/db_configs')
 const mongoose=require('mongoose')
-const bodyParser=require('body-parser')
+
 const cors=require('cors')
 require("dotenv").config()
 const app=express()
 
 //middleware for converting js objects into json
-app.use(bodyParser.json())
+app.use(express.json())
 app.use(cors())
 
 

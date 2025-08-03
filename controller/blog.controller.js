@@ -42,11 +42,11 @@ exports.createBlog=async(req,res)=>{
 
 exports.getAllBlogs=async(req,res)=>{
    try{
+    
     let currentPage = Number(req.query?.pageNumber) ||1;
     let filterType = req.query?.type;
     let query={};
-    // console.log('Filter type:', filterType);
-    // console.log('Mongo query:', query);
+   
     if(filterType && filterType !=='all' ){
       query.category = filterType;
     }
