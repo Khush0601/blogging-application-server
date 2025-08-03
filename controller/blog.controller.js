@@ -94,6 +94,7 @@ exports.updateBlog=async(req,res)=>{
         blogBanner:req.body.blogBanner,
         title:req.body.title,
         content:req.body.content,
+        category:req.body.category,
      }
      const updateBlogDetails=await BlogModel.findByIdAndUpdate(blogId,{$set:{...updateDetails}},{new:true})
      res.status(200).send({

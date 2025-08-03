@@ -170,7 +170,7 @@ exports.googleLogin=async(req,res)=>{
         const {password,...restData}=savingUser._doc
         return res.status(200).send({
           user:restData,
-        token
+          token
         })
       }
       else{
