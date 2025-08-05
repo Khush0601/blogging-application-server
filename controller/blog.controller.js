@@ -45,9 +45,10 @@ exports.getAllBlogs=async(req,res)=>{
     
     let currentPage = Number(req.query?.pageNumber) ||1;
     let filterType = req.query?.type;
+    console.log(req?.query?.type)
     let query={};
-   
-    if(filterType && filterType !=='all' ){
+    
+    if(filterType && filterType !=='All' ){
       query.category = filterType;
     }
      const blogs=await BlogModel.find(query).limit(10).skip((currentPage - 1) * 10)
