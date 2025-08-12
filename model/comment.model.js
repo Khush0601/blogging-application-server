@@ -10,7 +10,7 @@ const commentSchema=new mongoose.Schema({
    },
    blogId:{
     type:mongoose.SchemaTypes.ObjectId,
-    ref:'product',
+    ref:'Blog',
     required:true
    },
    commentMessage:{

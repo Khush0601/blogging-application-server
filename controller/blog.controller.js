@@ -62,7 +62,6 @@ exports.getAllBlogs=async(req,res)=>{
    }
 }
 
-
 exports.getBlogsById = async (req, res) => {
   const blogId = req.params.blogId;
   if (!mongoose.Types.ObjectId.isValid(blogId)) {
