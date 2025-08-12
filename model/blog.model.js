@@ -28,6 +28,13 @@ const blogSchema=new mongoose.Schema({
     type:Number,
     default:0,
   },
+  likedBy: [
+  {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: 'User',
+    default: []
+  }
+],
   comment:{
    type:[mongoose.SchemaTypes.ObjectId],
    ref:"comments",

@@ -62,31 +62,31 @@ exports.getAllBlogs=async(req,res)=>{
    }
 }
 
-exports.getBlogsById=async(req,res)=>{
-    const blogId=req.params.blogId;
-    if(!mongoose.Types.ObjectId.isValid(blogId)){
-       return res.status(400).send({
-           message:'invalid blogId'
-       })
+
+exports.getBlogsById = async (req, res) => {
+  const blogId = req.params.blogId;
+  if (!mongoose.Types.ObjectId.isValid(blogId)) {
+    return res.status(400).send({ message: 'Invalid blogId' });
+  }
+  try {
+    const blogDetails = await BlogModel.findById(blogId)
+      .populate('userId', 'name picture')
+      .select('+likedBy');
+    if (!blogDetails) {
+      return res.status(404).send({ message: 'Blog not found' });
     }
-   try{
-    const blogDetails=await BlogModel.findById(blogId).populate('userId', 'name picture');
-    if(!blogDetails){
-        return res.status(404).send({
-            message:'blog not found'
-        })
+    let isLiked = false;
+    if (req.userId) {
+      isLiked = blogDetails.likedBy.some(id => id.toString() === req.userId);
     }
-    else{
-        return res.status(200).send(blogDetails)
-    }
-     
-    }
-    catch(err){
-       res.status(500).send({
-        message:err.message??'error while fetching'
-       })
-    }
-}
+    const blogObj = blogDetails.toObject();
+    delete blogObj.likedBy;
+    return res.status(200).send({ ...blogObj, isLiked });
+  } catch (err) {
+    res.status(500).send({ message: err.message ?? 'Error while fetching' });
+  }
+};
+
 
 exports.updateBlog=async(req,res)=>{
     try{
@@ -153,3 +153,38 @@ exports.getUserBlogs=async(req,res)=>{
     res.status(500).send({ message: "Error while fetching user blogs" });
  }
 }
+
+exports.likeBlog = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    const userId = req.userId;
+
+    const blog = await BlogModel.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+
+    const alreadyLiked = blog.likedBy.includes(userId);
+
+    if (alreadyLiked) {
+      
+      blog.likedBy = blog.likedBy.filter(id => id.toString() !== userId);
+      blog.likeCount = blog.likeCount > 0 ? blog.likeCount - 1 : 0;
+    } else {
+      blog.likedBy.push(userId);
+      blog.likeCount += 1;
+    }
+
+    await blog.save();
+
+    res.status(200).json({
+      message: alreadyLiked ? 'Blog unliked' : 'Blog liked',
+      likeCount: blog.likeCount
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+
