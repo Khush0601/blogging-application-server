@@ -156,7 +156,7 @@ exports.getUserBlogs=async(req,res)=>{
 exports.likeBlog = async (req, res) => {
   try {
     const blogId = req.params.id;
-    const userId = req.userId;
+    const userId = req.userId; 
 
     const blog = await BlogModel.findById(blogId);
     if (!blog) {
@@ -169,9 +169,19 @@ exports.likeBlog = async (req, res) => {
       
       blog.likedBy = blog.likedBy.filter(id => id.toString() !== userId);
       blog.likeCount = blog.likeCount > 0 ? blog.likeCount - 1 : 0;
+
+      
+      await UserModel.findByIdAndUpdate(userId, {
+        $pull: { likedBlogs: blogId }
+      });
+
     } else {
+     
       blog.likedBy.push(userId);
       blog.likeCount += 1;
+      await UserModel.findByIdAndUpdate(userId, {
+        $addToSet: { likedBlogs: blogId } // prevents duplicates
+      });
     }
 
     await blog.save();
@@ -182,8 +192,10 @@ exports.likeBlog = async (req, res) => {
     });
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 

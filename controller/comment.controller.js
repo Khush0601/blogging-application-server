@@ -29,7 +29,11 @@ exports.addComment = async (req, res) => {
 
     blog.comment.push(savedComment._id);
     await blog.save();
-
+   
+    await userModel.findByIdAndUpdate(userId, {
+      $addToSet: { commentBlogs: blogId }
+    });
+    
     res.status(201).json({
       commentId: savedComment._id,
       userName: user.name,
