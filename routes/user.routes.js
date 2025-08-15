@@ -8,7 +8,7 @@ module.exports=(app)=>{
     app.post('/bloggingApplication/api/v1/user/signIn',userController.signIn)
     app.post('/bloggingApplication/api/v1/user/googleLogin',[googleTokenVerification],userController.googleLogin)
     app.get('/bloggingApplication/api/v1/user/autoLogin',[verifyToken],userController.autoLogin)
-    
+    app.get('/bloggingApplication/api/v1/user/',verifyToken,userController.getUserDetails)
 
     
 }
