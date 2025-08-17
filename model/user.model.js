@@ -37,6 +37,11 @@ const userSchema=new mongoose.Schema({
         ref:'likedBlogs',
         default:[]
     },
+   commentBlogs: {
+    type: [mongoose.SchemaTypes.ObjectId],
+    ref: 'blogs', // Reference the blogs collection
+    default: []
+},
     createdAt:{
         type:Date,
         default:()=>{
