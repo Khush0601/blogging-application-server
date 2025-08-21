@@ -16,7 +16,7 @@ app.use(cors())
 require('./routes/user.routes')(app)
 require('./routes/blog.routes')(app)
 require('./routes/comment.routes')(app)
-
+require('./routes/testimonial.routes')(app)
 
 //connection to DB:
  mongoose.connect(dbConfig. DB_URL)
