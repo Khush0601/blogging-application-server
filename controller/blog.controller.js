@@ -197,5 +197,25 @@ exports.likeBlog = async (req, res) => {
   }
 };
 
+exports.getLatestBlogs = async (req, res) => {
+  try {
+    const latestBlogs = await BlogModel.find()
+      .sort({ createdAt: -1 }) 
+      .limit(10);              
+
+    res.status(200).json({
+      success: true,
+      count: latestBlogs.length,
+      data: latestBlogs,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Error while fetching latest blogs",
+      error: err.message,
+    });
+  }
+};
+
 
 
