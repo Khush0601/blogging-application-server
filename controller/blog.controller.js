@@ -204,8 +204,6 @@ exports.getLatestBlogs = async (req, res) => {
       .limit(10);              
 
     res.status(200).json({
-      success: true,
-      count: latestBlogs.length,
       data: latestBlogs,
     });
   } catch (err) {
@@ -217,5 +215,16 @@ exports.getLatestBlogs = async (req, res) => {
   }
 };
 
+exports.getBlogs=async(req,res)=>{
+  try {
+    const blogs = await BlogModel.find({}); 
+    res.status(200).json(blogs);
+  } catch (err) {
+    res.status(500).json({
+      message: "Error while fetching blogs",
+      error: err.message,
+    });
+  }
+}
 
 
