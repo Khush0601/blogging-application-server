@@ -207,8 +207,9 @@ exports.autoLogin = async (req, res) => {
 };
 
 exports.getUserDetails = async (req, res) => {
+  const userId=req.body.userId;
   try {
-    const user = await UserModel.findById(req.userId)
+    const user = await UserModel.findById(userId)
       .populate('blogs')        
       .populate('likedBlogs')  
       .populate('commentBlogs') 
