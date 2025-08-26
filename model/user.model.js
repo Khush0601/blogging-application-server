@@ -39,7 +39,7 @@ const userSchema=new mongoose.Schema({
     },
    commentBlogs: {
     type: [mongoose.SchemaTypes.ObjectId],
-    ref: 'blogs', // Reference the blogs collection
+    ref: 'blogs',
     default: []
 },
     createdAt:{

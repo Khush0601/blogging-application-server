@@ -206,21 +206,25 @@ exports.autoLogin = async (req, res) => {
   }
 };
 
-exports.getUserDetails = async (req, res) => {
-  const userId=req.body.userId;
-  try {
+exports.getUserDetails=async(req,res)=>{
+ try {
+    const { userId } = req.params;
+    
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
     const user = await UserModel.findById(userId)
-      .populate('blogs')        
-      .populate('likedBlogs')  
-      .populate('commentBlogs') 
-      .lean();
+     
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error("Error in getUserDetails:", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
-};
+
+}
