@@ -125,7 +125,7 @@ exports.signIn=async(req,res)=>{
       const token=generateToken(validUserData._id)
       const {password,...restData}=validUserData._doc
       return res.status(200).send({
-        user:restData,
+      ...restData,
         token
       })
       }
@@ -199,7 +199,7 @@ exports.autoLogin = async (req, res) => {
       return res.status(404).send({ message: "User not found" });
     }
     const {password,...restData}=user._doc
-    res.status(200).send({ user:restData });
+    res.status(200).send({ restData });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Error during auto login" });
