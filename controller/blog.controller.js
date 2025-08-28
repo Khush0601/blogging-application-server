@@ -217,8 +217,15 @@ exports.getLatestBlogs = async (req, res) => {
 
 exports.getBlogs=async(req,res)=>{
   try {
-    const blogs = await BlogModel.find({}); 
-    res.status(200).json(blogs);
+   let currentPage = Number(req.query?.pageNumber) || 1;
+    let limit = 10;
+
+    const blogs = await BlogModel.find({})
+      .sort({ createdAt: -1 })
+      .skip((currentPage - 1) * limit)
+      .limit(limit);
+
+    res.status(200).send(blogs);
   } catch (err) {
     res.status(500).json({
       message: "Error while fetching blogs",
