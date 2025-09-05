@@ -45,7 +45,7 @@ exports.getAllBlogs=async(req,res)=>{
     
     let currentPage = Number(req.query?.pageNumber) ||1;
     let filterType = req.query?.type;
-    console.log(req?.query?.type)
+    
     let query={};
     
     if(filterType && filterType !=='All' ){

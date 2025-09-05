@@ -24,9 +24,9 @@ exports.generateOtp=async(req,res)=>{
     let email=req.body.email;
     let otp=crypto.randomInt(1000,9999)
     otp=otp.toString()
-    console.log(otp)
+    // console.log(otp)
     let saveOtp=await otpModel.create({email,otp})
-    console.log(saveOtp)
+    // console.log(saveOtp)
     const mailObj = {
       from:process.env.EMAIL_SERVICE_USER,
       to: email,
@@ -194,7 +194,7 @@ exports.googleLogin=async(req,res)=>{
 exports.autoLogin = async (req, res) => {
   
   try {
-    console.log(req.userId)
+    
     const user = await UserModel.findById(req.userId)
     
     if (!user) {
