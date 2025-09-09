@@ -36,8 +36,10 @@ exports.addComment = async (req, res) => {
     
     res.status(201).json({
       commentId: savedComment._id,
-      userName: user.name,
-      userImage: user.image,
+      userId: {
+        name:user.name,
+        image:user.image
+      },
       commentMessage: savedComment.commentMessage,
       createdAt: savedComment.createdAt,
     });
