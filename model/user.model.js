@@ -32,6 +32,9 @@ const userSchema=new mongoose.Schema({
         ref:'blogs',
         default:[]
     },
+    refreshToken:{
+          type:String,
+    },
     likedBlogs:{
         type:[mongoose.SchemaTypes.ObjectId],
         ref:'likedBlogs',

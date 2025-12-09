@@ -7,7 +7,7 @@ const cors=require('cors')
 require("dotenv").config()
 const app=express()
 
-//middleware for converting js objects into json
+
 app.use(express.json())
 app.use(cors())
 

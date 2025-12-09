@@ -5,7 +5,7 @@ const nodemailer=require("nodemailer")
 const crypto=require('crypto')
  const otpModel=require('../model/otp.model')
  const {otpTemplate}=require('../utils/otpTemplate')
- const {generateToken}= require('../utils/jwt')
+ const {generateToken, generateRefreshToken}= require('../utils/jwt')
  
  const transporter = nodemailer.createTransport({
      host: 'smtp.gmail.com',
@@ -123,6 +123,17 @@ exports.signIn=async(req,res)=>{
         })
       }
       const token=generateToken(validUserData._id)
+     
+   const refreshToken = generateRefreshToken(validUserData._id);
+   validUserData.refreshToken = refreshToken;
+    await validUserData.save();
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
       const {password,...restData}=validUserData._doc
       return res.status(200).send({
       ...restData,
